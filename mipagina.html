@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameGuides - Resident Evil 4 Remake</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --card-bg: #1e1e1e;
+            --primary-blue: #00d4ff;
+            --accent-yellow: #ffb400;
+            --text-gray: #b0b0b0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            /* Mejora respuesta táctil en iPhone */
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* NAVBAR */
+        header {
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.9);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #333;
+        }
+
+        .logo {
+            color: var(--primary-blue);
+            font-weight: bold;
+            font-size: 24px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        nav a:hover { color: var(--accent-yellow); }
+
+        /* SECCIONES */
+        .page {
+            display: none; 
+            padding: 40px 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .active {
+            display: block; 
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ESTILO INICIO (CARDS) */
+        .container { max-width: 1200px; margin: auto; }
+        
+        .hero-title {
+            text-align: center;
+            font-size: 45px;
+            color: var(--primary-blue);
+            margin-bottom: 50px;
+        }
+
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.3s ease;
+            border: 1px solid #333;
+        }
+
+        .card:hover { 
+            transform: translateY(-10px); 
+            border-color: var(--primary-blue);
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.2);
+        }
+
+        .card-img-wrapper {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.1);
+        }
+
+        .card-content { padding: 20px; }
+
+        .btn-yellow {
+            display: inline-block;
+            background: var(--accent-yellow);
+            color: black;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+        
+        .btn-yellow:hover {
+            filter: brightness(1.2);
+            transform: scale(1.05);
+        }
+
+        /* ESTILO GUIA INTERNA */
+        .guide-header-img {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .info-box {
+            background: #252525;
+            padding: 25px;
+            border-left: 5px solid var(--accent-yellow);
+            margin: 30px 0;
+        }
+
+        /* --- NUEVA CORRECCIÓN: Tarjetas de Video con Miniaturas --- */
+        .video-link-card {
+            display: block;
+            background: #252525;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            border: 1px solid #333;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .video-link-card:hover {
+            border-color: var(--primary-blue);
+            transform: scale(1.02);
+        }
+
+        .video-thumb {
+            width: 100%;
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .video-thumb::after {
+            content: '▶';
+            font-size: 40px;
+            color: white;
+            background: rgba(0, 0, 0, 0.6);
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .video-caption {
+            padding: 15px;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            text-align: center;
+            background: #1e1e1e;
+        }
+
+        footer { text-align: center; padding: 60px; color: #444; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo" onclick="showPage('inicio')" ontouchstart="">GameGuides</div>
+        <nav>
+            <a href="#" onclick="showPage('inicio')" ontouchstart="">Inicio</a>
+            <a href="#">Guías</a>
+            <a href="#">Noticias</a>
+        </nav>
+    </header>
+
+    <div id="inicio" class="page active">
+        <div class="container">
+            <h1 class="hero-title">Descubre, Domina, Conquista</h1>
+            
+            <div class="guide-grid">
+                <div class="card">
+                    <div class="card-img-wrapper">
+                        <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2050650/capsule_616x353.jpg" alt="RE4">
+                    </div>
+                    <div class="card-content">
+                        <h3>Resident Evil 4 Remake: Joyas del Lago</h3>
+                        <p>Aprende a localizar todos los tesoros de la zona del lago y maximiza tus pesetas.</p>
+                        <button class="btn-yellow" onclick="showPage('guia-re4')" ontouchstart="">Leer Guía</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-img-wrapper">
+                        <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/990080/capsule_616x353.jpg" alt="Hogwarts">
+                    </div>
+                    <div class="card-content">
+                        <h3>Hogwarts Legacy: Monturas Mágicas</h3>
+                        <p>Guía completa para desbloquear el Hipogrifo y otras criaturas.</p>
+                        <button class="btn-yellow">Próximamente</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="guia-re4" class="page">
+        <div class="container" style="max-width: 900px;">
+            <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg" class="guide-header-img">
+            
+            <h1 style="color: var(--primary-blue); margin-top: 30px;">Guía: Ubicación de Todos los Tesoros</h1>
+            <p style="color: var(--accent-yellow); font-weight: bold;">Resident Evil 4 Remake - Pueblo, Castillo e Isla</p>
+
+            <div class="info-box">
+                <h2>Consejo de Oro</h2>
+                <p>Combina siempre las joyas antes de vender los tesoros para maximizar tus ganancias.</p>
+            </div>
+
+            <h3 style="color: var(--primary-blue);">📍 Haz clic para ver en YouTube:</h3>
+
+            <a href="https://www.youtube.com/watch?v=ryzwPfPpehU" target="_blank" class="video-link-card">
+                <div class="video-thumb" style="background-image: url('https://img.youtube.com/vi/ryzwPfPpehU/maxresdefault.jpg');"></div>
+                <div class="video-caption">Ver Tesoros del PUEBLO</div>
+            </a>
+
+            <a href="https://www.youtube.com/watch?v=ruv-7O5MgeE" target="_blank" class="video-link-card">
+                <div class="video-thumb" style="background-image: url('https://img.youtube.com/vi/ruv-7O5MgeE/maxresdefault.jpg');"></div>
+                <div class="video-caption">Ver Tesoros del CASTILLO</div>
+            </a>
+
+            <a href="https://www.youtube.com/watch?v=GTBvk08RjRM" target="_blank" class="video-link-card">
+                <div class="video-thumb" style="background-image: url('https://img.youtube.com/vi/GTBvk08RjRM/maxresdefault.jpg');"></div>
+                <div class="video-caption">Ver Tesoros de la ISLA</div>
+            </a>
+
+            <button class="btn-yellow" onclick="showPage('inicio')" ontouchstart="">← Volver al Inicio</button>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 GAMEGUIDES - LA MEJOR COMUNIDAD GAMER
+    </footer>
+
+    <script>
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.style.display = 'none';
+                page.classList.remove('active');
+            });
+
+            const target = document.getElementById(pageId);
+            if (target) {
+                target.style.display = 'block';
+                target.classList.add('active');
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        }
+    </script>
+
+</body>
+</html>
+
+/html>
+
